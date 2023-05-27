@@ -7,8 +7,7 @@ import os
 from googleapiclient import errors
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google.oauth2 import service_account
+from google.oauth2 import service_account, credentials
 
 from utils.config_loader import config
 
@@ -32,7 +31,7 @@ class GoogleDrive:
         creds = None
         scopes = ['https://www.googleapis.com/auth/drive']
         if os.path.exists(token_file):
-            creds = Credentials.from_authorized_user_file(
+            creds = credentials.Credentials.from_authorized_user_file(
                 token_file, scopes=scopes)
         if os.path.exists(service_account_file):
             creds = service_account.Credentials.from_service_account_file(

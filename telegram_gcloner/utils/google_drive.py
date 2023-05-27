@@ -26,7 +26,7 @@ class GoogleDrive:
                                             'gclone_config',
                                             str(user_id),
                                             'current',
-                                            'token.json')
+                                            'credentials.json')
 
         creds = None
         scopes = ['https://www.googleapis.com/auth/drive']

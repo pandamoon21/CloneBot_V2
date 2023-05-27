@@ -21,10 +21,18 @@ class GoogleDrive:
                                             str(user_id),
                                             'current',
                                             'google_drive_puppet.json')
+        
+        token_file = os.path.join(config.BASE_PATH,
+                                            'gclone_config',
+                                            str(user_id),
+                                            'current',
+                                            'token.json')
 
         creds = None
         scopes = ['https://www.googleapis.com/auth/drive']
-
+        if os.path.exists(token_file):
+            creds = service_account.Credentials.from_authorized_user_file(
+                token_file, scopes=scopes)
         if os.path.exists(service_account_file):
             creds = service_account.Credentials.from_service_account_file(
                 service_account_file, scopes=scopes)

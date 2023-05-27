@@ -38,14 +38,12 @@ class GoogleDrive:
         creds = None
         scopes = ['https://www.googleapis.com/auth/drive']
         if os.path.exists(token_file):
-            creds = credentials.Credentials.from_authorized_user_file(token_file, scopes=scopes)
-            if not creds.valid:
-                if os.path.exist(credentials_file):
-                    flow = InstalledAppFlow.from_client_secrets_file(credentials_file,
-                                                      scopes=scopes)
-                    creds = flow.run_local_server(port=0)
-                    with open(token_file, 'w') as token:
-                        token.write(creds.to_json())
+            if os.path.exist(credentials_file):
+                flow = InstalledAppFlow.from_client_secrets_file(credentials_file,
+                                                  scopes=scopes)
+                creds = flow.run_local_server(port=0)
+                with open(token_file, 'w') as token:
+                    token.write(creds.to_json())
             
         if os.path.exists(token_file):
             creds = credentials.Credentials.from_authorized_user_file(

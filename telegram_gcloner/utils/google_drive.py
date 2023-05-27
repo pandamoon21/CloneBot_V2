@@ -8,6 +8,7 @@ from googleapiclient import errors
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account, credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 from utils.config_loader import config
 
@@ -26,10 +27,26 @@ class GoogleDrive:
                                             'gclone_config',
                                             str(user_id),
                                             'current',
+                                            'token.json')
+        
+        credentials_file = os.path.join(config.BASE_PATH,
+                                            'gclone_config',
+                                            str(user_id),
+                                            'current',
                                             'credentials.json')
 
         creds = None
         scopes = ['https://www.googleapis.com/auth/drive']
+        if os.path.exists(token_file):
+            creds = Credentials.from_authorized_user_file(token_file, scopes=scopes)
+            if not creds.valid:
+                if os.path.exist(credentials_file):
+                    flow = InstalledAppFlow.from_client_secrets_file(credentials_file,
+                                                      scopes=scopes)
+                    creds = flow.run_local_server(port=0)
+                    with open(token_file, 'w') as token:
+                        token.write(creds.to_json())
+            
         if os.path.exists(token_file):
             creds = credentials.Credentials.from_authorized_user_file(
                 token_file, scopes=scopes)

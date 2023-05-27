@@ -37,7 +37,7 @@ class GoogleDrive:
 
         creds = None
         scopes = ['https://www.googleapis.com/auth/drive']
-        if os.path.exists(token_file):
+        if not os.path.exists(token_file):
             if os.path.exist(credentials_file):
                 flow = InstalledAppFlow.from_client_secrets_file(credentials_file,
                                                   scopes=scopes)
